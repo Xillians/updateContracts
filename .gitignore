@@ -1,0 +1,11 @@
+# build folder
+dist/
+
+#npm packages
+node_modules
+
+# npm packages
+.npmrc
+
+# Env values
+.env
