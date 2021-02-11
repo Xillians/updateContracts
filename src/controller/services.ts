@@ -21,13 +21,19 @@ export class Service {
         try {
             await this.Contracts.setService(service);
             const getResponse = await this.Contracts.getContract(authorization, merchantId);
-            this.Contracts.getInstrumentBody =getResponse.data[service];
+            const responseBody = this.convertToLowerCase(getResponse.data);
+            this.Contracts.getInstrumentBody = responseBody[service.toLowerCase()];
             const settings = this.Contracts.setRequestBody(requestBody);
-            const updateRequestBody = this.Contracts.preparePutRequestBody(getResponse.data.contract, settings, service);
+            const updateRequestBody = this.Contracts.preparePutRequestBody(getResponse.data.contract, settings, service); 
             const response = await this.Contracts.putUpdateContract(authorization, merchantId, updateRequestBody);
             return response;
         } catch (error) {
             return error.response
         }
+    }
+    private convertToLowerCase(object) {
+        return object = Object.keys(object).reduce((c, k) => (
+            c[k.toLowerCase().trim()] = object[k], c), {}
+        )
     }
 }
