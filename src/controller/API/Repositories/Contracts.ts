@@ -2,6 +2,7 @@ import swedbankPay from './swedbankPay';
 
 export class Contracts {
     private contracts = "";
+    public state: state  = state.Configured;
     public getInstrumentBody = {};
     constructor() {
     }
@@ -29,17 +30,29 @@ export class Contracts {
     public async setService(service: string) {
         this.contracts = `/psp/${service}/contracts/`
     }
-    public setRequestBody<T>(props: Partial<T> = {}) {
-        const defaults = this.getInstrumentBody;
-        return { ...defaults, ...props }
+    public setInstrumentSettings<T>(settings: Partial<T> = {}) {
+        return this.mergeObjects(this.getInstrumentBody, settings);
+    }
+    public setContractSettings<T>(settings: Partial<T>) {
+        const defaults = {
+            state: this.state,
+            comment: "editContract update: auto comment"
+        }
+        return this.mergeObjects(defaults, settings)
     }
     public preparePutRequestBody(contract: any, settings: object, service: string) {
         return {
-            contract: {
-                state: contract.state,
-                comment: "proof of concept"
-            },
+            contract: contract,
             [service]: settings
         }
     }
+    private mergeObjects<T>(defaults: T, props: Partial<T>) {
+        return { ...defaults, ...props }
+    }
+}
+enum state {
+    Configured = 'Configured',
+    Active = 'Active',
+    Deactivated = 'Deactivated',
+    Deleted = 'Deleted'
 }
