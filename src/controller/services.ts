@@ -22,9 +22,8 @@ export class Service {
             await this.Contracts.setService(service);
             const getResponse = await this.Contracts.getContract(authorization, merchantId);
             const responseBody = this.convertToLowerCase(getResponse.data);
-            this.Contracts.getInstrumentBody = responseBody[service.toLowerCase()];
-            const settings = this.Contracts.setRequestBody(requestBody);
-            const updateRequestBody = this.Contracts.preparePutRequestBody(getResponse.data.contract, settings, service); 
+            this.storeContractData(responseBody, service);
+            const updateRequestBody = this.mergeInputsAndCreatePutBody(requestBody, service);
             const response = await this.Contracts.putUpdateContract(authorization, merchantId, updateRequestBody);
             return response;
         } catch (error) {
@@ -35,5 +34,16 @@ export class Service {
         return object = Object.keys(object).reduce((c, k) => (
             c[k.toLowerCase().trim()] = object[k], c), {}
         )
+    }
+    private storeContractData(responseBody, service) {
+        const instrument = responseBody[service.toLowerCase()];
+        const state = responseBody.contract.state;
+        this.Contracts.getInstrumentBody = instrument;
+        this.Contracts.state = state;
+    }
+    private mergeInputsAndCreatePutBody(requestBody, service: string) {
+        const contractInput = this.Contracts.setContractSettings(requestBody.contract);
+        const settingsInput = this.Contracts.setInstrumentSettings(requestBody[service.toLowerCase()]);
+        return this.Contracts.preparePutRequestBody(contractInput, settingsInput, service);
     }
 }
