@@ -18,7 +18,7 @@ app.get("/contracts/:service/:merchantId", async (req, res) => {
             authorization
         );
         return res.send(response.data);
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.response.status);
         res.send({
             "Error": error.message
@@ -35,7 +35,7 @@ app.get("/contracts/:service/:subservice/:merchantId", async (req, res) => {
             authorization
         );
         return res.send(response.data);
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.response.status);
         res.send({
             "Error": error.message
@@ -55,7 +55,7 @@ app.patch("/contracts/:service/:merchantId", async (req, res) => {
         );
         res.status(response.status);
         return res.send(response.data);
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.response.status);
         res.send({
             "Error": error.message
@@ -75,7 +75,7 @@ app.patch("/contracts/:service/:subservice/:merchantId", async (req, res) => {
         );
         res.status(response.status);
         return res.send(response.data);
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.response.status);
         res.send({
             "Error": error.message

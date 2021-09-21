@@ -26,7 +26,7 @@ export class Service {
             const updateRequestBody = this.mergeInputsAndCreatePutBody(requestBody, service);
             const response = await this.Contracts.putUpdateContract(authorization, merchantId, updateRequestBody);
             return response;
-        } catch (error) {
+        } catch (error: any) {
             return error.response
         }
     }
