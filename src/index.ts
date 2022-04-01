@@ -1,7 +1,15 @@
 import  { environment } from './config/app-config';
 import express from 'express';
+import cors from 'cors';
 import { Service } from './controller/services';
 const app = express();
+const corsOptions = {
+    origin: 'http://localhost:4200',
+    credentials: true,
+    methods: ['PATCH', 'GET'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}
+app.use(cors(corsOptions))
 const service = new Service();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
