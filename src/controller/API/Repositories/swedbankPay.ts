@@ -5,6 +5,7 @@ export default axios.create({
     baseURL: environment.baseUrl,
     withCredentials: true,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        from: "proxy API"
     }
 });
