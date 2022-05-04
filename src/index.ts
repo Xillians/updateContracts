@@ -4,7 +4,7 @@ import cors from 'cors';
 import { Service } from './controller/services';
 const app = express();
 const corsOptions = {
-    origin: '*',
+    origin: true,
     credentials: true,
     methods: ['PATCH', 'GET'],
     allowedHeaders: ['Content-Type', 'Authorization']
